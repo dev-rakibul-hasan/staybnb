@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Host Dashboard{% endblock %}
+
+{% block container_width %}max-w-6xl mx-auto{% endblock %}
+
+{% block header_title %}Host Dashboard{% endblock %}
+{% block header_subtitle %}Manage your listings and view your performance.{% endblock %}
+
+{% block content %}
+<div class="space-y-8 animate-fade-in">
+    <!-- Welcome Section -->
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div>
+            <h2 class="text-xl font-semibold text-white">Welcome back, {{ user.full_name }}!</h2>
+            <p class="text-gray-400 text-sm">Here are your current property listings.</p>
+        </div>
+        <a href="{% url 'listing:add_listing' %}"
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-primary-500 transition-all duration-200">
+            <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
+                </path>
+            </svg>
+            Add New Property
+        </a>
+    </div>
+
+    <!-- Listings Grid/Table -->
+    <div class="overflow-hidden rounded-2xl glass-card border-none shadow-2xl">
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-700/30">
+                <thead class="bg-gray-900/20 backdrop-blur-md">
+                    <tr>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Property</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Location</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">Price
+                        </th>
+                        <th scope="col"
+                            class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Guests</th>
+                        <th scope="col"
+                            class="px-6 py-3 text-right text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-700/50">
+                    {% for listing in listings %}
+                    <tr class="hover:bg-gray-800/30 transition-colors duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="flex items-center">
+                                <div
+                                    class="h-12 w-16 flex-shrink-0 overflow-hidden rounded-lg border border-gray-700 bg-gray-800">
+                                    {% if listing.image %}
+                                    <img class="h-full w-full object-cover" src="{{ listing.image.url }}"
+                                        alt="{{ listing.title }}">
+                                    {% else %}
+                                    <div class="h-full w-full flex items-center justify-center text-gray-500">
+                                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                            </path>
+                                        </svg>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-white">{{ listing.title }}</div>
+                                    <div class="text-xs text-gray-400 truncate max-w-[150px]">{{ listing.description }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm text-gray-300">{{ listing.city }}</div>
+                            <div class="text-xs text-gray-500">{{ listing.country }}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-primary-400">${{ listing.price_per_night }}<span
+                                    class="text-gray-500 text-xs">/night</span></div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-300">
+                            <div class="flex items-center gap-1">
+                                <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                    </path>
+                                </svg>
+                                {{ listing.max_guests }}
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex items-center justify-end gap-3">
+                                <a href="{% url 'listing:edit_listing' listing.id %}"
+                                    class="text-primary-400 hover:text-primary-300 transition-colors">Edit</a>
+                                <a href="{% url 'listing:delete_listing' listing.id %}"
+                                    class="text-red-400 hover:text-red-300 transition-colors">Delete</a>
+                            </div>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="px-6 py-12 text-center">
+                            <div class="flex flex-col items-center justify-center">
+                                <div class="w-16 h-16 rounded-full bg-gray-800 flex items-center justify-center mb-4">
+                                    <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+                                        </path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-lg font-medium text-white">No listings yet</h3>
+                                <p class="mt-1 text-sm text-gray-400">Get started by creating your first property
+                                    listing.</p>
+                                <div class="mt-6">
+                                    <a href="{% url 'listing:add_listing' %}"
+                                        class="inline-flex items-center px-4 py-2 border border-transparent rounded-xl shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-primary-500 transition-all duration-200">
+                                        <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor"
+                                            viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                        </svg>
+                                        Create Listing
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

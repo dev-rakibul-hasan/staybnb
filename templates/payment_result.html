@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}{% if success %}Payment Successful{% else %}Payment Failed{% endif %}{% endblock %}
+
+{% block container_width %}max-w-md mx-auto{% endblock %}
+
+{% block content %}
+<div class="mt-8 bg-gray-800/80 rounded-2xl border border-gray-700/50 p-8 shadow-2xl backdrop-blur-sm text-center">
+
+    {% if success %}
+    <div
+        class="w-20 h-20 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30">
+        <svg class="w-10 h-10 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-white mb-2">Payment Successful!</h2>
+    <p class="text-gray-400 mb-8">
+        Your booking <span class="text-white font-medium">#{{ booking.id }}</span> has been paid. Please wait for the
+        host to confirm your reservation.
+    </p>
+    <a href="{% url 'guest_bookings' %}"
+        class="block w-full py-3 px-4 bg-gray-700 hover:bg-gray-600 text-white font-medium rounded-xl transition-colors">
+        Go to My Bookings
+    </a>
+
+    {% else %}
+    <div
+        class="w-20 h-20 bg-red-900/30 rounded-full flex items-center justify-center mx-auto mb-6 border border-red-500/30">
+        <svg class="w-10 h-10 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+    </div>
+    <h2 class="text-2xl font-bold text-white mb-2">Payment Failed</h2>
+    <p class="text-gray-400 mb-8">
+        There was an issue processing your payment. Please check your card details and try again.
+    </p>
+    <a href="{% url 'payment_page' booking.id %}"
+        class="block w-full py-3 px-4 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl shadow-lg shadow-primary-500/20 transition-all transform hover:scale-[1.02]">
+        Try Again
+    </a>
+    {% endif %}
+</div>
+{% endblock %}

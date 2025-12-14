@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}Confirm Acceptance{% endblock %}
+
+{% block container_width %}max-w-xl mx-auto{% endblock %}
+
+{% block content %}
+<div class="mt-8 bg-gray-800/80 rounded-2xl border border-gray-700/50 p-8 shadow-2xl backdrop-blur-sm">
+    <div class="text-center mb-6">
+        <div
+            class="w-16 h-16 bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-green-500/30">
+            <svg class="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+        </div>
+        <h2 class="text-2xl font-bold text-white mb-2">Accept Booking?</h2>
+        <p class="text-gray-400">
+            You are about to accept the booking for <span class="text-white font-medium">{{ booking.listing.title
+                }}</span> by <span class="text-white font-medium">{{ booking.guest.full_name }}</span>.
+        </p>
+    </div>
+
+    <div class="bg-gray-900/50 rounded-lg p-4 mb-8 text-sm border border-gray-700/50">
+        <div class="flex justify-between mb-2">
+            <span class="text-gray-500">Dates</span>
+            <span class="text-gray-300">{{ booking.check_in|date:"M d" }} - {{ booking.check_out|date:"M d, Y" }}</span>
+        </div>
+        <div class="flex justify-between">
+            <span class="text-gray-500">Total Payout</span>
+            <span class="text-green-400 font-medium">${{ booking.total_price }}</span>
+        </div>
+    </div>
+
+    <form method="post" class="flex flex-col gap-3">
+        {% csrf_token %}
+        <button type="submit"
+            class="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl shadow-lg shadow-green-500/20 transition-all transform hover:scale-[1.02]">
+            Yes, Accept Booking
+        </button>
+        <a href="{% url 'host_requests' %}"
+            class="w-full py-3 px-4 bg-gray-700/50 hover:bg-gray-700 text-gray-300 font-medium rounded-xl text-center transition-colors">
+            Cancel
+        </a>
+    </form>
+</div>
+{% endblock %}

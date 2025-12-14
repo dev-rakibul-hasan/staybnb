@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block header_title %}Create your account{% endblock %}
+{% block header_subtitle %}Join Staybnb and find your next memorable stay.{% endblock %}
+
+{% block content %}
+<div class="flex items-center justify-center min-h-[calc(100vh-160px)] py-12">
+    <div class="w-full max-w-lg p-8 glass-card rounded-2xl shadow-2xl animate-fade-in border border-white/5">
+        <div class="text-center mb-8">
+            <div
+                class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary-900/30 mb-4 ring-1 ring-primary-500/20">
+                <svg class="w-6 h-6 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white mb-2">Create your account</h2>
+            <p class="text-sm text-gray-400">Join Staybnb and start your journey</p>
+        </div>
+
+        <form method="POST" novalidate class="space-y-5">
+            {% csrf_token %}
+            {% if form.non_field_errors %}
+            <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center">
+                {{ form.non_field_errors|join:", " }}
+            </div>
+            {% endif %}
+
+            {% if message %}
+            <div class="p-3 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center">
+                {{ message }}
+            </div>
+            {% endif %}
+
+            <div class="flex flex-col sm:flex-row gap-4">
+                <div class="space-y-1.5 flex-1">
+                    <label class="block text-xs font-medium text-gray-400 uppercase tracking-wide ml-1"
+                        for="id_first_name">Name</label>
+                    <input type="text" name="full_name" id="id_first_name"
+                        class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm"
+                        placeholder="John Doe">
+                </div>
+                <div class="space-y-1.5 sm:w-1/3">
+                    <label class="block text-xs font-medium text-gray-400 uppercase tracking-wide ml-1"
+                        for="id_role">Role</label>
+                    <div class="relative">
+                        <select name="role" id="id_role"
+                            class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm appearance-none cursor-pointer">
+                            <option value="guest" class="bg-gray-900">Guest</option>
+                            <option value="host" class="bg-gray-900">Host</option>
+                        </select>
+                        <div
+                            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-400">
+                            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="block text-xs font-medium text-gray-400 uppercase tracking-wide ml-1"
+                    for="id_email">Email</label>
+                <input type="email" name="email" id="id_email"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm"
+                    placeholder="john@example.com">
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="block text-xs font-medium text-gray-400 uppercase tracking-wide ml-1"
+                    for="id_phone">Phone</label>
+                <input type="tel" name="phone" id="id_phone"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm"
+                    placeholder="+1 234 567 890">
+            </div>
+
+            <div class="space-y-1.5">
+                <label class="block text-xs font-medium text-gray-400 uppercase tracking-wide ml-1"
+                    for="id_password">Password</label>
+                <input type="password" name="password" id="id_password"
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-white placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-primary-500/50 focus:border-primary-500 transition-all text-sm"
+                    placeholder="••••••••">
+            </div>
+
+            <button type="submit"
+                class="w-full flex justify-center py-3.5 px-4 border border-transparent rounded-xl shadow-lg shadow-primary-900/20 text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-indigo-600 hover:from-primary-500 hover:to-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-primary-500 transition-all transform hover:-translate-y-0.5 mt-2">
+                Create Account
+            </button>
+
+            <div class="border-t border-gray-700/50 pt-6 mt-6 text-center">
+                <p class="text-sm text-gray-400">Already have an account?</p>
+                <a href="{% url 'accounts:login' %}"
+                    class="inline-block mt-2 text-primary-400 hover:text-primary-300 font-medium text-sm hover:underline transition-all">Sign
+                    in here</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

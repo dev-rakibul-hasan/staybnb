@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block title %}Pay for Booking{% endblock %}
+
+{% block container_width %}max-w-md mx-auto{% endblock %}
+
+{% block content %}
+<div class="mt-8 bg-gray-800/80 rounded-2xl border border-gray-700/50 p-8 shadow-2xl backdrop-blur-sm">
+    <div class="text-center mb-8">
+        <h2 class="text-2xl font-bold text-white mb-2">Complete Your Payment</h2>
+        <p class="text-gray-400">Payment for <span class="text-white">{{ booking.listing.title }}</span></p>
+    </div>
+
+    <div class="bg-gray-900/50 rounded-lg p-5 mb-8 border border-gray-700/50 space-y-2 text-sm">
+        <div class="flex justify-between">
+            <span class="text-gray-500">Dates</span>
+            <span class="text-gray-300">{{ booking.check_in }} - {{ booking.check_out }}</span>
+        </div>
+        <div class="flex justify-between">
+            <span class="text-gray-500">Nights</span>
+            <span class="text-gray-300">{{ booking.nights }}</span>
+        </div>
+        <div class="pt-2 border-t border-gray-700 mt-2 flex justify-between items-center">
+            <span class="text-gray-400">Total</span>
+            <span class="text-xl font-bold text-primary-400">${{ booking.total_price }}</span>
+        </div>
+    </div>
+
+    <form method="POST" action="{% url 'process_payment' booking.id %}" class="space-y-5">
+        {% csrf_token %}
+        <div>
+            <label class="block text-sm font-medium text-gray-400 mb-1">Card Number</label>
+            <input type="text" name="card_number" placeholder="4242 4242 4242 4242" required
+                class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+            <p class="text-xs text-gray-500 mt-1">Simulate: Even last digit = Success, Odd = Fail</p>
+        </div>
+
+        <div>
+            <label class="block text-sm font-medium text-gray-400 mb-1">Cardholder Name</label>
+            <input type="text" name="card_name" required
+                class="w-full bg-gray-900/50 border border-gray-700 rounded-lg px-4 py-2.5 text-white placeholder-gray-600 focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all">
+        </div>
+
+        <button type="submit"
+            class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-500 text-white font-medium rounded-xl shadow-lg shadow-primary-500/20 transition-all transform hover:scale-[1.02]">
+            Pay ${{ booking.total_price }}
+        </button>
+    </form>
+
+    <div class="mt-6 text-center">
+        <a href="{% url 'guest_bookings' %}" class="text-sm text-gray-500 hover:text-gray-300 transition-colors">Cancel
+            Payment</a>
+    </div>
+</div>
+{% endblock %}

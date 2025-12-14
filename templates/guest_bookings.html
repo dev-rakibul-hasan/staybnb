@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}My Bookings{% endblock %}
+
+{% block container_width %}max-w-5xl mx-auto{% endblock %}
+
+{% block header_title %}My Bookings{% endblock %}
+{% block header_subtitle %}Overview of your past and upcoming trips{% endblock %}
+
+{% block content %}
+<div class="mb-8 flex justify-end">
+    <a href="{% url 'listing:search_listing' %}"
+        class="inline-flex items-center px-4 py-2 border border-primary-500 text-sm font-medium rounded-lg text-primary-400 hover:bg-primary-900/30 transition-colors">
+        Find a new place
+    </a>
+</div>
+
+<div class="space-y-6">
+    {% for b in bookings %}
+    <div
+        class="glass-card rounded-xl border-none p-6 flex flex-col md:flex-row gap-6 transition-all hover:bg-gray-800/40">
+        <!-- Thumbnail (if we had access to listing image easily, we'd put it here, for now using details) -->
+        <div class="flex-grow">
+            <div class="flex justify-between items-start mb-4">
+                <h3 class="text-xl font-semibold text-white">{{ b.listing.title }}</h3>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium 
+                    {% if b.status == 'confirmed' or b.status == 'accepted' %}bg-green-900/30 text-green-400 border border-green-700/50
+                    {% elif b.status == 'cancelled' %}bg-red-900/30 text-red-400 border border-red-700/50
+                    {% else %}bg-yellow-900/30 text-yellow-500 border border-yellow-700/50{% endif %}">
+                    {{ b.status|title }}
+                </span>
+            </div>
+
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                <div>
+                    <span class="block text-gray-500 mb-1">Check-in</span>
+                    <span class="text-white">{{ b.check_in|date:"M d, Y" }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500 mb-1">Check-out</span>
+                    <span class="text-white">{{ b.check_out|date:"M d, Y" }}</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500 mb-1">Duration</span>
+                    <span class="text-white">{{ b.nights }} nights</span>
+                </div>
+                <div>
+                    <span class="block text-gray-500 mb-1">Paid?</span>
+                    <span
+                        class="text-white font-medium {% if b.is_paid %}text-green-400{% else %}text-red-400{% endif %}">
+                        {% if b.is_paid %}Yes{% else %}No{% endif %}
+                    </span>
+                </div>
+                <div>
+                    <span class="block text-gray-500 mb-1">Total Price</span>
+                    <span class="text-white font-medium text-primary-400">${{ b.total_price }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex md:flex-col justify-center gap-2 md:w-32 md:border-l md:border-gray-700/50 md:pl-6">
+            <a href="{% url 'listing:listing_detail' b.listing.id %}"
+                class="w-full text-center px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium rounded-lg transition-colors">
+                View Property
+            </a>
+        </div>
+    </div>
+    {% empty %}
+    <div class="text-center py-12 bg-gray-800/30 rounded-2xl border border-dashed border-gray-700">
+        <svg class="w-12 h-12 text-gray-600 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10">
+            </path>
+        </svg>
+        <h3 class="text-lg font-medium text-white mb-2">No bookings found</h3>
+        <p class="text-gray-400 mb-6">You haven't made any bookings yet.</p>
+        <a href="{% url 'listing:search_listing' %}"
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors">
+            Start Exploring
+        </a>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Add Property{% endblock %}
+
+{% block container_width %}max-w-6xl mx-auto{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+    <!-- Left Side: Form -->
+    <div class="space-y-8">
+        <div>
+            <h1 class="text-3xl font-bold text-white tracking-tight">Become a Host</h1>
+            <p class="mt-2 text-gray-400">Share your space and start earning. Fill in the details below to list your
+                property.</p>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            {% csrf_token %}
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">Property Title</label>
+                <input type="text" name="title" placeholder="e.g., Cozy Cottage in the Woods" required
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">Description</label>
+                <textarea name="description" rows="4" placeholder="Describe your property..." required
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200"></textarea>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">Address</label>
+                <input type="text" name="address" placeholder="Street Address" required
+                    class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-300">City</label>
+                    <input type="text" name="city" placeholder="City" required
+                        class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-300">Country</label>
+                    <input type="text" name="country" placeholder="Country" required
+                        class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-300">Price per Night ($)</label>
+                    <div class="relative">
+                        <span class="absolute left-4 top-3 text-gray-500">$</span>
+                        <input type="number" name="price" placeholder="0.00" required
+                            class="w-full pl-8 pr-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-300">Max Guests</label>
+                    <input type="number" name="guests" placeholder="1" required
+                        class="w-full px-4 py-3 rounded-xl bg-gray-900/50 border border-gray-700 text-gray-100 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200">
+                </div>
+            </div>
+
+            <div class="space-y-2">
+                <label class="block text-sm font-medium text-gray-300">Property Image</label>
+                <div class="relative group">
+                    <input type="file" name="image" id="file-upload" class="hidden"
+                        onchange="document.getElementById('file-name').textContent = this.files[0].name">
+                    <label for="file-upload"
+                        class="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-700 rounded-xl cursor-pointer hover:border-primary-500 hover:bg-gray-800/50 transition-all duration-200">
+                        <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                            <svg class="w-8 h-8 mb-3 text-gray-400 group-hover:text-primary-500 transition-colors"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
+                                </path>
+                            </svg>
+                            <p class="mb-2 text-sm text-gray-400"><span class="font-semibold">Click to upload</span> or
+                                drag and drop</p>
+                            <p class="text-xs text-gray-500" id="file-name">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full flex justify-center py-4 px-4 border border-transparent rounded-xl shadow-lg text-sm font-bold text-white bg-gradient-to-r from-primary-600 to-primary-500 hover:from-primary-500 hover:to-primary-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-primary-500 transition-all duration-200 transform hover:scale-[1.02]">
+                Publish Listing
+            </button>
+        </form>
+    </div>
+
+    <!-- Right Side: Illustration/Preview -->
+    <div class="hidden lg:block sticky top-8">
+        <div class="bg-gray-800/30 backdrop-blur-xl border border-gray-700/30 rounded-2xl p-6 shadow-2xl">
+            <img src="{% static 'images/hosting_illustration.png' %}" alt="Hosting Illustration"
+                class="w-full h-auto rounded-xl shadow-lg mb-6 transform transition-transform hover:scale-[1.02] duration-500">
+
+            <div class="space-y-4">
+                <div class="flex items-center gap-4 p-4 bg-gray-900/50 rounded-xl border border-gray-700/50">
+                    <div
+                        class="w-12 h-12 rounded-full bg-primary-500/20 flex items-center justify-center text-primary-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white">Earn Extra Income</h3>
+                        <p class="text-sm text-gray-400">Turn your extra space into a steady income stream.</p>
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4 p-4 bg-gray-900/50 rounded-xl border border-gray-700/50">
+                    <div
+                        class="w-12 h-12 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                            </path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-white">Reach Millions</h3>
+                        <p class="text-sm text-gray-400">Connect with travelers from around the world.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
